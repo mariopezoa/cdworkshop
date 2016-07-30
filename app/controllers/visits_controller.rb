@@ -4,6 +4,7 @@ class VisitsController < ApplicationController
   # GET /visits
   # GET /visits.json
   def index
+	@visit = Visit.new
     @visits = Visit.all
   end
 
@@ -28,11 +29,12 @@ class VisitsController < ApplicationController
 
     respond_to do |format|
       if @visit.save
-        format.html { redirect_to @visit, notice: 'Visit was successfully created.' }
+        format.html { redirect_to visits_url, notice: 'Visit was successfully created.' }
         format.json { render :show, status: :created, location: @visit }
       else
-        format.html { render :new }
-        format.json { render json: @visit.errors, status: :unprocessable_entity }
+		@visits = Visit.all
+        format.html { render :index }
+        format.json { render json: @visit.errors, location: @visits, status: :unprocessable_entity }
       end
     end
   end
